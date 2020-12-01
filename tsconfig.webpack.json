@@ -1,0 +1,47 @@
+{
+  "entry": "./server.ts",
+  "target": "node",
+  "mode": "development",
+  "watch": true,
+  "externals": [
+    "node_modules"
+  ],
+  "externalsPresets": {
+    "node": true
+  },
+  "output": {
+    "path": "./build",
+    "filename": "app.bundle.js"
+  },
+  "resolve": {
+    "extensions": ['.ts'],
+  },
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "esModuleInterop": true
+  },
+  "plugins": [
+    new ForkTsCheckerWebpackPlugin(),
+    new WebpackShellPlugin({
+      // when build ends run dev if the environment is development else run prod
+      onBuildEnd: (NODE_ENV === 'development') ? ['yarn run:dev'] : ['yarn run:prod']
+    })
+  ],
+  "module": {
+    "rules": [
+      {
+        "test": /\.ts$/,
+        "use": [
+          {
+            "loader": 'ts-loader',
+            "options": {
+              "configFile": NODE_ENV === 'development' ? 'tsconfig.json' : 'tsconfig.prod.json',
+              "transpileOnly": true // and we use ForkTsCheckerWebpackPlugin for type checking
+            }
+          }
+        ],
+      }
+    ]
+  }
+}

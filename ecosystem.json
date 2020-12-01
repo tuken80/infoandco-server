@@ -1,0 +1,49 @@
+{
+  "apps" : [
+    {
+      "name"                : "server",
+      "cwd"                 : ".",
+      "script"              : "app.js",
+      "interpreter"         : "",
+      "interpreter_args"    : "",
+      "instance_var"        : 'INSTANCE_ID',
+      "instances"           : 0,
+      "exec_mode"           : "cluster",
+      "autorestart"         : true,
+      "max_restarts"        : 1,
+      "min_uptime"          : 200,
+      "max_memory_restart"  : "1G",
+      "watch"               : true,
+      "watch_ignore": [
+        "./logs/*.log"
+      ],
+      "log_date_format": "DD/MM/YYYY HH:mm Z",
+      "pid_file": "./logs/pid.log",
+      "err_file": "./logs/err.log",
+      "out_file": "./logs/combined.log",
+      "combine_logs": true,
+      env: {
+        INSTANCE_ID: 'server',
+        NODE_ENV: 'development'
+      },
+      env_production: {
+        INSTANCE_ID: 'server',
+        NODE_ENV: 'production'
+      },
+      "post_update": "npm i --no-dev"
+    }
+  ],
+  "deployment": {
+    "key": "ssh-key-path",
+    "user": "romisch",
+    "host": "vps-hostname",
+    "ssh_options": "",
+    "ref": "https://github.com/tuken80/server/master",
+    "repo": "https://github.com/tuken80/server",
+    "path": "/var/www/server",
+    "pre-setup": "",
+    "post-setup": "",
+    "pre-deploy-local": "",
+    "post-deploy": ""
+  }
+}
